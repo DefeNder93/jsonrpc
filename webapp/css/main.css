@@ -17,10 +17,11 @@
     /*width: 400px;*/
     min-height: 100px;
     font-family: 'Open Sans', sans-serif;
+    position: relative;
 }
 
-.comments-box {
-
+.comments-box:first-child {
+    border-top: 1px solid #e8e8e8;
 }
 
 #header .nav a{
@@ -29,4 +30,47 @@
 
 #header .nav a:hover, #header .nav a:focus{
     color: #999;
+}
+
+.header {
+    position: relative;
+}
+
+.comment .header {
+    padding: 5px;
+    background-color: #eee;
+}
+
+.comment .header .theme {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: bold;
+    font-size: 16px;
+}
+
+.comment .header .author {
+    font-weight:bold;
+    color: #6979b8;
+}
+
+.comment .header .time {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+}
+
+.comment .header .date {
+    position: absolute;
+    top: 5px;
+    right: 60px;
+}
+
+.comment .header .by {
+    position: absolute;
+    top: 5px;
+    right: 135px;
+}
+
+
+.comment .body {
+    padding: 5px;
 }

@@ -9,6 +9,8 @@ angular.module('reChat',
         'ui.bootstrap',
         'reChat.modalCtrl',
         'reChat.modalInstanceCtrl',
+        'reChat.registerCtrl',
+        'reChat.loginCtrl'
     ]).config(['$routeProvider',
         function($routeProvider) {
             $routeProvider.
@@ -19,6 +21,14 @@ angular.module('reChat',
                 when('/feed', {
                     templateUrl: 'templates/feed.html',
                     controller: 'FeedCtrl'
+                }).
+                when('/login', {
+                    templateUrl: 'templates/login.html',
+                    controller: 'LoginCtrl'
+                }).
+                when('/register', {
+                    templateUrl: 'templates/register.html',
+                    controller: 'RegisterCtrl'
                 }).
                 otherwise({
                     redirectTo: '/feed'
