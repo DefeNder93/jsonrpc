@@ -44,7 +44,7 @@ function sendJSONRPC(url, method, params, onResponse, onError) {
         data: JSON.stringify(request),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        timeout: JSONRPC_TIMEOUT,
+        timeout: JSONRPC_TIMEOUT
     })
         .done(function (response, textStatus) {
             //console.log("AJAX response ", response, "textStatus: ', textStatus);

@@ -6,6 +6,7 @@ $(function() {
 
     $('#login-form').submit(function (event) {
         sendJSONRPC(JSONRPC_URL, "login", {username: $('#login-login').val(), password: $('#login-password').val() }, function (response) {
+
             if (response.status == "error") {
                 $("#login-error").text(response.message);
             }
@@ -16,9 +17,10 @@ $(function() {
                 }
                 window.location = next
             }
+
         });
         return false
-    })
+    });
 
     $('#login-register').click(function (event) {
         window.location = "/register" //TODO rewrite human way

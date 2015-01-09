@@ -4,13 +4,16 @@ angular.module('reChat',
         'reChat.chatCtrl',
         'reChat.headerCtrl',
         'reChat.dialogService',
+        'reChat.jsonRpsService',
         'ngRoute',
+        'ipCookie',
         'infinite-scroll',
         'ui.bootstrap',
         'reChat.modalCtrl',
         'reChat.modalInstanceCtrl',
         'reChat.registerCtrl',
-        'reChat.loginCtrl'
+        'reChat.loginCtrl',
+        'reChat.userService'
     ]).config(['$routeProvider',
         function($routeProvider) {
             $routeProvider.

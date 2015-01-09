@@ -6,7 +6,6 @@ $(function() {
 
     $('#register-form').submit(function (event) {
         var isRegistered = 0;
-        console.log("sdfa");
         sendJSONRPC(JSONRPC_URL, "register", {username: $('#register-login').val(), password: $('#register-password').val() }, function (response) { //$('#register-secret').val()
             if (response.status == "error") {
                 $("#register-error").text(response.message);

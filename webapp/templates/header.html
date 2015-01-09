@@ -1,4 +1,3 @@
-
 <div id="header">
     <img id="header-logo" src="/img/logo.png">
     <div class="container">
@@ -9,7 +8,8 @@
                 </ul>
             </div>
     </div>
-    <div style="position: absolute; top: 0; right: 0">
+
+    <div ng-show="!isLoggedIn()" style="position: absolute; top: 0; right: 0">
         <div class="btn-group">
             <ul class="nav navbar-nav">
                 <li><a ng-href="/#login">Login</a></li>
@@ -17,6 +17,16 @@
             </ul>
         </div>
     </div>
+    <span ng-show="isLoggedIn()" style="position: absolute; right: 130px; top: 15px; color:#FFF">Welcome home, {{getUsername()}}!</span>
+    <div ng-show="isLoggedIn()" style="position: absolute; top: 0; right: 0">
+        <div class="btn-group">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#" ng-click="logout()">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+
+
 </div>
 
 <!--<div id="top">

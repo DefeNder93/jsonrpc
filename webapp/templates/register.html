@@ -11,13 +11,13 @@
                         <form id="register-form" accept-charset="UTF-8" role="form">
                             <fieldset>
                                 <div class="form-group">
-                                    <input id="register-login" class="form-control" placeholder="User name" name="login" type="text">
+                                    <input ng-model="userName" id="register-login" class="form-control" placeholder="User name" name="login" type="text">
                                 </div>
                                 <div class="form-group">
-                                    <input id="register-password" class="form-control" placeholder="Password" name="password" type="password" value="">
+                                    <input ng-model="userPassword" id="register-password" class="form-control" placeholder="Password" name="password" type="password" value="">
                                 </div>
-                                <p id="register-error" class="bg-danger"></p>
-                                <input id="register-register" class="btn btn-lg btn-success btn-block" type="submit" value="Register">
+                                <p ng-show="" id="register-error" class="bg-danger"></p>
+                                <button ng-click="register()" id="register" class="btn btn-lg btn-success btn-block" type="submit">Register</button>
                             </fieldset>
                         </form>
                     </div>
