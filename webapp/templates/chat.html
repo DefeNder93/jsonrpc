@@ -4,7 +4,10 @@
 <div id="users" re-users-panel>
     <div id="users-content">
         <div class="user" ng-repeat="user in users">
-            {{user.name}} <i ng-click="deleteUser($index,user.name)" class="fa fa-close close"></i>
+            {{user.name}}
+            <i ng-click="deleteUser($index,user.name)" class="fa fa-close close"></i>
+            <i ng-click="inviteUser($index,user.name)" class="fa fa-plus-square close" style="margin-right: 5px; color: green"></i>
+            <i ng-click="openUserDialog($index,user.name)" class="fa fa-comments close" style="margin-right: 5px; color: #6979b8"></i>
         </div>
     </div>
     <div id="users-sticker" ng-class="'sticker-' + isShowUserPanel" ng-click="toggleUserPanel()">
@@ -17,7 +20,7 @@
     <div collapse="isSettingsCollapsed" style="padding-top: 10px">
         <div class="well well-lg">
             <button ng-click="toggleRoomCollapse()" class="btn btn-default">Create room</button>
-            <button class="btn btn-default" ng-click="toggleInviteCollapse()">Send invite</button>
+            <button class="btn btn-default" ng-click="toggleUserCollapse()">Add user</button>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <span ng-repeat="room in rooms">
                 <button class="btn btn-default btn-success">{{room.name}}</button>
@@ -27,8 +30,8 @@
                 <button ng-click="createRoom()" style="margin-top: 10px" class="btn btn-default">Create</button>
             </div>
             <div collapse="isInviteCollapsed">
-                <input style="width: 200px; margin-top: 10px" ng-model="invitedName" class="form-control" placeholder="Send invite" name="send-invite">
-                <button ng-click="sendInvite()" style="margin-top: 10px" class="btn btn-default">Send invite</button>
+                <input style="width: 200px; margin-top: 10px" ng-model="invitedName" class="form-control" placeholder="Add user" name="add-user">
+                <button ng-click="sendInvite()" style="margin-top: 10px" class="btn btn-default">Add user</button>
             </div>
         </div>
     </div>

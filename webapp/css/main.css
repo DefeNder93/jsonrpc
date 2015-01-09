@@ -202,8 +202,11 @@
     border-top: none;
 }
 
-
 #users-content .user .close {
+    float: right;
+}
+
+#users-content .user .plus {
     float: right;
 }
 

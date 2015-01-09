@@ -57,7 +57,7 @@ angular.module('reChat.chatCtrl', [])
                 $scope.message = "";
             };
 
-            $scope.toggleInviteCollapse = function() {
+            $scope.toggleUserCollapse = function() {
                 $scope.isInviteCollapsed = !$scope.isInviteCollapsed;
                 $scope.isCreateRoomCollapsed = true;
             };
@@ -86,6 +86,14 @@ angular.module('reChat.chatCtrl', [])
 
             $scope.deleteUser = function(index, userName) {
                 $scope.users.splice(index,1);
+            };
+
+            $scope.inviteUser = function(index, userName) {
+                console.log("Invite user " + userName);
+            };
+
+            $scope.openUserDialog = function(index, userName) {
+                console.log("Open dialog " + userName);
             };
 
             $scope.isSettingsCollapsed = true;
