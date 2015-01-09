@@ -111,8 +111,7 @@ angular.module('reChat.feedCtrl', [])
             ];
 
             var i = 21;
-            $scope.myPagingFunction = function() {
-                console.log("myPagingFunction");
+            $scope.nextScroll = function() {
                 for (j=0;j<=30;j++) {
                     $scope.comments.push({
                         author: "Иван" + i,

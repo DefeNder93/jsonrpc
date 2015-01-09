@@ -25,14 +25,14 @@
 </div>
 <div class="container" style="padding-top: 10px">
     <div>
-        <textarea ng-model="message" class="form-control" style="width: 100%"></textarea>
+        <textarea ng-model="message" placeholder="Write message" class="form-control" style="width: 100%"></textarea>
         <p style="padding-top: 10px">
             <button class="btn btn-default pull-right" ng-click="sendMessage()">Send</button>
         </p>
     </div>
-    <div infinite-scroll="myPagingFunction()">
+    <div infinite-scroll="nextScroll()" style="padding-top: 35px;">
         <div class="comments-box" ng-repeat="comment in comments">
-            <div class="comment">
+            <div class="comment triangle-border" ng-class="typeOfComment(comment.type)">
                 <p style="font-weight:bold">{{comment.author}}</p>
                 <p>{{comment.text}}</p>
             </div>

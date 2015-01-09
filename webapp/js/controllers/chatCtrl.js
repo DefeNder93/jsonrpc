@@ -9,7 +9,14 @@ angular.module('reChat.chatCtrl', [])
             $scope.isCreateRoomCollapsed = true;
             $scope.isInviteCollapsed = true;
             $scope.invitedName = "";
-            $scope.message = "Write message";
+            //$scope.message = "Write message";
+
+            $scope.typeOfComment = function(type) {
+                if (type === 'my') {
+                    return 'right';
+                }
+                return 'left';
+            };
 
             $scope.sendMessage = function() {
                 i++;
@@ -59,7 +66,8 @@ angular.module('reChat.chatCtrl', [])
             $scope.comments = [ // TODO get from server
                 {
                     author: "Иван1",
-                    text: "Текст комментария1"
+                    text: "Текст комментария1",
+                    type: "my"
                 },
                 {
                     author: "Иван2",
@@ -144,7 +152,7 @@ angular.module('reChat.chatCtrl', [])
             };
 
             var i = 21;
-            $scope.myPagingFunction = function() {
+            $scope.nextScroll = function() {
                 console.log("myPagingFunction");
                 for (j=0;j<=30;j++) {
                     $scope.comments.push({
