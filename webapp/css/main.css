@@ -176,3 +176,60 @@
     right: 10px;
 }
 /* talk cloud */
+
+/* users */
+
+#users {
+    position: absolute;
+    top: 50%;
+    left: -287px;
+    margin: -40px 0 0 0;
+    overflow: hidden;
+}
+#users-content {
+    background: #f5f5f5;
+    border: 1px solid #CCC;
+    width: 288px;
+    float: left;
+    border-radius: 5px 0 5px 5px;
+}
+
+#users-content .user {
+    padding: 5px 10px;
+    border-top: 1px solid #ddd;
+}
+#users-content .user:first-child {
+    border-top: none;
+}
+
+
+#users-content .user .close {
+    float: right;
+}
+
+#users-sticker {
+    float: left;
+    position: relative;
+    padding: 5px;
+    margin: 0;
+    cursor: pointer;
+    color: #FFF;
+    background-color: #6979b8;
+}
+
+#users-sticker.sticker-true {
+    -moz-transform: rotate(90deg);
+    -webkit-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    margin: 7px -11px;
+    font-weight: bold;
+    color: #FFF;
+}
+
+#users-sticker .close {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+}
+
+/* users */

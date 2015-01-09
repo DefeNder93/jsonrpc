@@ -1,7 +1,17 @@
 <!--<div ng-controller="ModalCtrl">
     <button class="btn btn-default" ng-click="open()">Get Invite</button>
 </div>--> <!-- TODO: for chat -->
-
+<div id="users" re-users-panel>
+    <div id="users-content">
+        <div class="user" ng-repeat="user in users">
+            {{user.name}} <i ng-click="deleteUser($index,user.name)" class="fa fa-close close"></i>
+        </div>
+    </div>
+    <div id="users-sticker" ng-class="'sticker-' + isShowUserPanel" ng-click="toggleUserPanel()">
+        <span ng-show="isShowUserPanel">Users</span>
+        <span ng-show="!isShowUserPanel"><i class="fa fa-mail-reply"></i></span>
+    </div>
+</div>
 <div id="settings" style="padding-top: 10px">
     <button class="btn btn-default center-block" ng-click="toggleSettingsCollapse()">Settings</button>
     <div collapse="isSettingsCollapsed" style="padding-top: 10px">

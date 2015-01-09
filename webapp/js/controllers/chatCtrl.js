@@ -6,6 +6,8 @@ angular.module('reChat.chatCtrl', [])
     .controller('ChatCtrl', ['$scope', 'UserService','JsonRpsService',
         function($scope, UserService, JsonRpsService) {
 
+            $scope.isShowUserPanel = true;
+
             $scope.isCreateRoomCollapsed = true;
             $scope.isInviteCollapsed = true;
             $scope.invitedName = "";
@@ -20,6 +22,10 @@ angular.module('reChat.chatCtrl', [])
                     return 'right';
                 }
                 return 'left';
+            };
+
+            $scope.toggleUserPanel = function() {
+                $scope.isShowUserPanel = !$scope.isShowUserPanel;
             };
 
             $scope.sendMessage = function() {
@@ -76,6 +82,10 @@ angular.module('reChat.chatCtrl', [])
                     $scope.isCreateRoomCollapsed = true;
                 }
                 $scope.roomName = "";
+            };
+
+            $scope.deleteUser = function(index, userName) {
+                $scope.users.splice(index,1);
             };
 
             $scope.isSettingsCollapsed = true;
@@ -174,6 +184,14 @@ angular.module('reChat.chatCtrl', [])
                     author: "Иван20",
                     text: "Текст комментария20"
                 }
+            ];
+
+            $scope.users = [
+                { name: "Иван"},
+                { name: "Петр"},
+                { name: "Ирина"},
+                { name: "Андрей"},
+                { name: "Санек"}
             ];
 
             $scope.toggleSettingsCollapse = function() {

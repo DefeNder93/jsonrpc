@@ -14,7 +14,8 @@ angular.module('reChat',
         'reChat.registerCtrl',
         'reChat.loginCtrl',
         'reChat.userService',
-        'reChat.reAffix'
+        'reChat.reAffix',
+        'reChat.reUsersPanel'
     ]).config(['$routeProvider',
         function($routeProvider) {
             $routeProvider.
