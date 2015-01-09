@@ -3,8 +3,8 @@
  * @class
  */
 angular.module('reChat.headerCtrl', [])
-    .controller('HeaderCtrl', ['$scope','ipCookie','UserService',
-        function($scope, ipCookie, UserService) {
+    .controller('HeaderCtrl', ['$scope','ipCookie','UserService','$location','$route',
+        function($scope, ipCookie, UserService, $location, $route) {
 
             //console.log("Is logged in - " + UserService.isLoggedIn());
             $scope.isLoggedIn = function() {
