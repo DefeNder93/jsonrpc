@@ -3,8 +3,8 @@
  * @class
  */
 angular.module('reChat.registerCtrl', [])
-    .controller('RegisterCtrl', ['$scope','JsonRpsService','ipCookie','JsonRpsService','$location',
-        function($scope, JsonRpsServce, ipCookie, JsonRpsService, $location) {
+    .controller('RegisterCtrl', ['$scope','JsonRpsService','ipCookie','JsonRpsService','$location','$timeout',
+        function($scope, JsonRpsServce, ipCookie, JsonRpsService, $location, $timeout) {
             var JSONRPC_URL = '/ajax';
             var USERNAME_COOKIE = 'username';
             /*sendJSONRPC(JSONRPC_URL, "register", {username: $('#register-login').val(), password: $('#register-password').val() }, function (response) { //$('#register-secret').val()
@@ -42,7 +42,13 @@ angular.module('reChat.registerCtrl', [])
                         console.log("error login when register");
                     });
                 }, function(response) {
-                    console.log("error register");
+                    $scope.registerError = response.message;
+                    angular.element("#register-error").text("Attention please! " + response.message);  // TODO переделать!
+                    $timeout(function(){
+                        $scope.registerError = "";
+                        angular.element("#register-error").text("");
+                    },5000);
+                    console.log("Error - " + response.message);
                 })
             }
         }]);
