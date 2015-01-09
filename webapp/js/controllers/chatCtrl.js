@@ -3,13 +3,17 @@
  * @class
  */
 angular.module('reChat.chatCtrl', [])
-    .controller('ChatCtrl', ['$scope',
-        function($scope) {
+    .controller('ChatCtrl', ['$scope', 'UserService','JsonRpsService',
+        function($scope, UserService, JsonRpsService) {
 
             $scope.isCreateRoomCollapsed = true;
             $scope.isInviteCollapsed = true;
             $scope.invitedName = "";
             //$scope.message = "Write message";
+
+            $scope.isLoggedIn = function() {
+                return UserService.isLoggedIn();
+            };
 
             $scope.typeOfComment = function(type) {
                 if (type === 'my') {
@@ -19,11 +23,31 @@ angular.module('reChat.chatCtrl', [])
             };
 
             $scope.sendMessage = function() {
-                i++;
-                $scope.comments.unshift({
-                    author: "Петр" + i,
-                    text: $scope.message
-                });
+
+                if (!UserService.isLoggedIn()) {
+                    console.log("Please logged in to write messages!");
+                    return;
+                }
+
+                /*JsonRpsService.sendJSONRPC(JSONRPC_URL,"sendMessage", {text: $scope.message}, function(response) {
+                    if ($scope.message.length>0) {
+                        $scope.comments.unshift({
+                            author: UserService.getUsername(),
+                            text: $scope.message
+                        });
+                    }
+                }, function(response) {
+                    // TODO alert и сообщение сервера в нем
+                });*/
+
+                if ($scope.message.length>0) {  // TODO выпилить
+                    $scope.comments.unshift({
+                        author: UserService.getUsername(),
+                        text: $scope.message,
+                        type: "my",
+                        time: moment(new Date()).format('HH:mm')
+                    });
+                }
                 $scope.message = "";
             };
 
@@ -67,19 +91,23 @@ angular.module('reChat.chatCtrl', [])
                 {
                     author: "Иван1",
                     text: "Текст комментария1",
-                    type: "my"
+                    type: "my",
+                    time: "12:06"
                 },
                 {
                     author: "Иван2",
-                    text: "Текст комментария2"
+                    text: "Текст комментария2",
+                    time: "12:05"
                 },
                 {
                     author: "Иван3",
-                    text: "Текст комментария3"
+                    text: "Текст комментария3",
+                    time: "12:05"
                 },
                 {
                     author: "Иван4",
-                    text: "Текст комментария4"
+                    text: "Текст комментария4",
+                    time: "12:04"
                 },
                 {
                     author: "Иван5",
@@ -87,7 +115,8 @@ angular.module('reChat.chatCtrl', [])
                 },
                 {
                     author: "Иван6",
-                    text: "Текст комментария6"
+                    text: "Текст комментария6",
+                    type: "my"
                 },
                 {
                     author: "Иван7",

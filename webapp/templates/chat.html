@@ -24,15 +24,16 @@
     </div>
 </div>
 <div class="container" style="padding-top: 10px">
-    <div>
+    <div id="message-form" re-affix>
         <textarea ng-model="message" placeholder="Write message" class="form-control" style="width: 100%"></textarea>
         <p style="padding-top: 10px">
-            <button class="btn btn-default pull-right" ng-click="sendMessage()">Send</button>
+            <button class="btn btn-default btn-success pull-right" ng-click="sendMessage()">Send</button>
         </p>
     </div>
     <div infinite-scroll="nextScroll()" style="padding-top: 35px;">
         <div class="comments-box" ng-repeat="comment in comments">
             <div class="comment triangle-border" ng-class="typeOfComment(comment.type)">
+                <span class="time">{{comment.time}}</span>
                 <p style="font-weight:bold">{{comment.author}}</p>
                 <p>{{comment.text}}</p>
             </div>

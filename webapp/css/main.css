@@ -15,13 +15,9 @@
 .comment {
     border-bottom: 1px solid #e8e8e8;
     /*width: 400px;*/
-    min-height: 100px;
+    /*min-height: 100px;*/
     font-family: 'Open Sans', sans-serif;
     position: relative;
-}
-
-.comments-box:first-child {
-    border-top: 1px solid #e8e8e8;
 }
 
 #header .nav a{
@@ -86,8 +82,8 @@
 }
 .triangle-border {
     position: relative;
-    padding: 15px;
-    margin: 1em 0 3em;
+    padding: 7px 0 0 10px;
+    margin: 15px 0;
     border: 5px solid #51CEFA;
     color: #333;
     background: #fff;
@@ -156,5 +152,27 @@
     right: -21px;
     border-width: 9px 0 9px 21px;
     border-color: transparent #fff;
+}
+
+#message-form.affix {
+    position: fixed;
+    top: 50px;
+    padding-top: 20px;
+    z-index: 10;
+    width: 1140px;
+    background-color: #FFF;
+}
+
+#header.affix {
+    top: 0;
+    position: fixed;
+    width: 100%;
+    z-index: 11;
+}
+
+.comment .time {
+    position: absolute;
+    top: 5px;
+    right: 10px;
 }
 /* talk cloud */

@@ -3,8 +3,8 @@
  * @class
  */
 angular.module('reChat.registerCtrl', [])
-    .controller('RegisterCtrl', ['$scope','JsonRpsService','ipCookie','JsonRpsService','$location','$timeout','$route',
-        function($scope, JsonRpsServce, ipCookie, JsonRpsService, $location, $timeout, $route) {
+    .controller('RegisterCtrl', ['$scope','ipCookie','JsonRpsService','$location','$timeout','$route',
+        function($scope, ipCookie, JsonRpsService, $location, $timeout, $route) {
             var JSONRPC_URL = '/ajax';
             var USERNAME_COOKIE = 'username';
             /*sendJSONRPC(JSONRPC_URL, "register", {username: $('#register-login').val(), password: $('#register-password').val() }, function (response) { //$('#register-secret').val()

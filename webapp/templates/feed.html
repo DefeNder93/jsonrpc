@@ -1,14 +1,12 @@
-<div class="container" style="padding-top: 10px">
-
-    <!--<div> <!-- TODO: добавить возможность отсылать письма -->
-        <!--<textarea class="form-control" ng-model="message" style="width: 100%"></textarea>
+<div class="container" style="padding-top: 40px">
+    <div ng-show="isLoggedIn()" class="container">
+        <textarea class="form-control" placeholder="Write announcing" ng-model="message" style="width: 100%"></textarea>
         <p style="padding-top: 10px">
-            <button class="btn btn-default pull-right" ng-click="sendMessage()">Send</button>
+            <button class="btn btn-default btn-success pull-right" ng-click="sendMessage()">Send</button>
         </p>
-    </div>-->
+    </div>
 
     <div infinite-scroll="nextScroll()" style="margin-top: 40px">
-
         <div class="comments-box" ng-repeat="comment in comments">
             <div class="comment">
                 <div class="header">

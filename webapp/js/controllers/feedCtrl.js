@@ -3,14 +3,17 @@
  * @class
  */
 angular.module('reChat.feedCtrl', [])
-    .controller('FeedCtrl', ['$scope','DialogService',
-        function($scope, DialogService) {
+    .controller('FeedCtrl', ['$scope','DialogService','UserService',
+        function($scope, DialogService, UserService) {
 
-            console.log("init feed ctrl " + DialogService.showSuccessAlert('Тестовый заголовок','Тело сообщения'));
+            //console.log("init feed ctrl " + DialogService.showSuccessAlert('Тестовый заголовок','Тело сообщения'));
+            //DialogService.showModalDialog(1,2,3);
 
-            DialogService.showModalDialog(1,2,3);
+            $scope.isLoggedIn = function() {
+                return UserService.isLoggedIn();
+            };
 
-            $scope.message = "Write letter";
+            $scope.message = "";
 
             $scope.sendMessage = function() {
                 i++;
