@@ -1,0 +1,29 @@
+
+<div id="header">
+    <img id="header-logo" src="/img/logo.png">
+    <div class="container">
+        <div class="container">
+            <div class="btn-group">
+                <ul class="nav navbar-nav">
+                    <li><a ng-href="/#chat">Chat</a></li>
+                    <li class="active"><a ng-href="/#feed">Feed</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-controller="ModalCtrl">
+    <button class="btn btn-default" ng-click="open()">Get Invite</button>
+</div>
+
+
+
+<!--<div id="top">
+    <div class="container">
+        <div class="btn-group">
+            <label ng-click="changeRoute('chat')" class="btn btn-primary" ng-model="radioModel" btn-radio="'Chat'">Chat</label>
+            <label ng-click="changeRoute('feed')" class="btn btn-primary" ng-model="radioModel" btn-radio="'Feed'">Feed</label>
+        </div>
+    </div>
+</div>-->
