@@ -23,7 +23,8 @@ error_codes = {
     100014: "incorrect input",
     100015: "contact list is empty",
     100016: "user already exists in your contact list",
-    100017: "user not exists"
+    100017: "user not exists",
+    100018: "user not in your contact list"
 }
 
 templates = {'errors': {}}
@@ -121,42 +122,49 @@ class ChatRPC(object):
                 pass
 
     ##############################################################
-    def get_userlist(session_id, username):
-        # IN {"jsonrpc": "2.0", "method": "get_userlist", "params": {"session_id" : "ssesid"}}
+    @RPCMethod(async=True)
+    def get_userlist(session, username):
+        # IN {"jsonrpc": "2.0", "method": "get_userlist", "params": {"session" : "ssesid"}}
         # OUT {"jsonrpc": "2.0", "method": "get_userlist", "params": {"status" : "Ok/Error", "alive": true/false, "message" : "success message/error code"}}
 
         #get user list from db
-        userlist = yield db.userlist.find_one({'username': username})
+        userlist = yield db.userlist.find_one({'username': username}, {'_id': False})
         if not userlist:
             raise gen.Return({'status': 'error', 'code': 100015, 'message': error_codes[100015]})  # contact list is empty
-        raise gen.Return({'status': 'ok', 'userlist': userlist})
+        raise gen.Return({'status': 'ok', 'userlist': userlist["userlist"]})
 
     # </get_userlist()>
 
     ##############################################################
-    def add_to_userlist(session_id, username, add_username):
-        # IN {"jsonrpc": "2.0", "method": "add_to_userlist", "params": {"session_id" : "ssesid"}}
-        # OUT {"jsonrpc": "2.0", "method": "add_to_userlist", "params": {"status" : "Ok/Error", "alive": true/false, "message" : "success message/error code"}}
+    @RPCMethod(async=True)
+    def add_to_userlist(session, username, add_username):
+        # IN {"jsonrpc": "2.0", "method": "add_to_userlist", "params": {"session" : "ssesid", "username": "username", "add_username": "add_username"}}
+        # OUT {"jsonrpc": "2.0", "method": "add_to_userlist", "params": {"status" : "Ok/Error", "message" : "success message/error code"}}
 
         # check if user exists
         user = yield db.users.find_one({ 'username': add_username })
         if not user:
             raise gen.Return({'status': 'error', 'code': 100017, 'message': error_codes[100017]})  # username not exists
 
-        userlist = yield db.userlist.find_one({'username': username})
+        userlist = yield db.userlist.find_one({'owner': username})
         if not userlist:
-            db.userlist.save({"owner": username, "userlist":[]})
-        if userlist:
-            raise gen.Return({'status': 'error', 'code': 100016, 'message': error_codes[100016]})  # user already exists in your contact list
-
+            yield db.userlist.save({"owner": username, "userlist":[]})
+        yield db.userlist.update({"owner": username}, {"$addToSet": { "userlist": { "name": add_username}}})
 
         raise gen.Return({'status': 'ok'})
     # </add_to_userlist()>
 
     ##############################################################
-    def del_from_userlist(session_id, username, del_username):
-        # IN {"jsonrpc": "2.0", "method": "del_from_userlist", "params": {"session_id" : "ssesid"}}
-        # OUT {"jsonrpc": "2.0", "method": "del_from_userlist", "params": {"status" : "Ok/Error", "alive": true/false, "message" : "success message/error code"}}
+    @RPCMethod(async=True)
+    def del_from_userlist(session, username, del_username):
+        # IN {"jsonrpc": "2.0", "method": "del_from_userlist", "params": {"session" : "ssesid", "username": "username", "del_username": "del_username"}}}
+        # OUT {"jsonrpc": "2.0", "method": "del_from_userlist", "params": {"status" : "Ok/Error", "message" : "success message/error code"}}
+
+        userlist = yield db.userlist.find_one({'owner': username})
+        if not userlist:
+            raise gen.Return({'status': 'error', 'code': 100014, 'message': error_codes[100014]})  # "incorrect input",
+
+        db.userlist.update( {"owner": username}, { "$pull": {"username": {"name": del_username}}})
         raise gen.Return({'status': 'ok'})
     # </del_from_userlist()>
 
