@@ -32,7 +32,6 @@ error_codes = {
 templates = {'errors': {}}
 
 
-
 class Sessions(dict):
     def __init__(self, *args, **kwargs):
         self.by_username = {}
@@ -267,6 +266,21 @@ class UserRPC(object):
         session.unregister()
         return {'status': 'ok'}
     # </logout()>
+
+    @RPCMethod(auth=True, async=True)
+    def unregister(session):
+        # IN {"jsonrpc": "2.0", "method": "logout", "params": {"session_id" : "ssesid"}}
+        # OUT {"jsonrpc": "2.0", "method": "logout", "params": {"status" : "Ok/Error", "message" : "success message/error code"}}
+        try:
+            UserRPC._delete_user(session.user['username'], session)
+        except RPCException, e:
+            error_dict = {'status':'error'}
+            error_dict.update(e.message)
+            raise gen.Return(error_dict)
+
+        session.unregister()
+        raise gen.Return({'status': 'ok'})
+    # </unregister()>
 
 # </class RPCHandlers>
 

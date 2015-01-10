@@ -1,17 +1,15 @@
 import pymongo
 import motor
-import binascii
 import signal
 import os
 import sys
 import errno
-import functools
 from tornado import ioloop, web, gen, escape
-from datetime import timedelta
-import pbkdf2
 import getopt
 import ConfigParser
 from plugins.users import userrpc
+from plugins.chat import chatrpc
+from plugins.feed import feedrpc
 
 PBKDF2_ITER = 10000
 
@@ -115,10 +113,36 @@ class AjaxHandler(BaseHandler):
     @web.asynchronous
     @gen.coroutine
     def post(self):
+        method_list = [userrpc.UserRPC, feedrpc.FeedRPC, chatrpc.ChatRPC]
         data = escape.json_decode(self.request.body)
 
+        # get method name
+        def get_method(_class):
+            try:
+                result = getattr(_class, data['method'])
+            except KeyError:
+                result = {'status': 'error', 'code': 100002, 'message': error_codes[100002]}  # incorrect RPC call
+
+            except AttributeError:
+                result = {'status': 'error', 'code': 100003, 'message': error_codes[100003]}  # unknown method
+            return result
+
+        for item in method_list:
+            retn = get_method(item)
+            if type(retn) == type(dict()):
+                if item == method_list[2]:
+                    res = retn
+                else:
+                    continue
+            else:
+                method = retn
+                break
+
         try:
-            method = getattr(userrpc.UserRPC, data['method'])
+            method = getattr(userrpc.UserRPC, data['method']) \
+                     or  getattr(feedrpc.FeedRPC, data['method']) \
+                     or  getattr(chatrpc.ChatRPC, data['method'])
+            print method
         except KeyError:
             res = {'status': 'error', 'code': 100012, 'message': error_codes[100012]}  # incorrect ajax call
         except AttributeError:
@@ -153,24 +177,40 @@ class RPCHandler(BaseHandler):
     @gen.coroutine
     def post(self):
         rpcresult = {}
+        method_list = [userrpc.UserRPC, feedrpc.FeedRPC, chatrpc.ChatRPC]
         data = escape.json_decode(self.request.body)
 
-        try:
-            method = getattr(userrpc.UserRPC, data['method'])
-        except KeyError:
-            res = {'status': 'error', 'code': 100002, 'message': error_codes[100002]}  # incorrect RPC call
-        except AttributeError:
-            res = {'status': 'error', 'code': 100003, 'message': error_codes[100003]}  # unknown method
-        else:
+        # get method name
+        def get_method(_class):
             try:
-                if type(data['params']) == list:
-                    data['params'] = data['params'][0]
-                res = yield method(**data['params'])
-            except Exception:
-                res = {'status': 'error', 'code': 100001, 'message': error_codes[100001]}  # internal server error
-                rpcresult["error"] = res
-                self.finish(rpcresult)
-                raise
+                result = getattr(_class, data['method'])
+            except KeyError:
+                result = {'status': 'error', 'code': 100002, 'message': error_codes[100002]}  # incorrect RPC call
+
+            except AttributeError:
+                result = {'status': 'error', 'code': 100003, 'message': error_codes[100003]}  # unknown method
+            return result
+
+        for item in method_list:
+            retn = get_method(item)
+            if type(retn) == type(dict()):
+                if item == method_list[2]:
+                    res = retn
+                else:
+                    continue
+            else:
+                method = retn
+                break
+
+        try:
+            if type(data['params']) == list:
+                data['params'] = data['params'][0]
+            res = yield method(**data['params'])
+        except Exception:
+            res = {'status': 'error', 'code': 100001, 'message': error_codes[100001]}  # internal server error
+            rpcresult["error"] = res
+            self.finish(rpcresult)
+            raise
         if res["status"] == 'error':
             rpcresult["error"] = res
         else:
