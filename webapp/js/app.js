@@ -3,6 +3,7 @@ angular.module('reChat',
         'reChat.feedCtrl',
         'reChat.chatCtrl',
         'reChat.headerCtrl',
+        'reChat.roomCtrl',
         'reChat.dialogService',
         'reChat.jsonRpsService',
         'ngRoute',
@@ -26,6 +27,10 @@ angular.module('reChat',
                 when('/feed', {
                     templateUrl: 'templates/feed.html',
                     controller: 'FeedCtrl'
+                }).
+                when('/room/:name', {
+                    templateUrl: 'templates/chat.html',
+                    controller: 'ChatCtrl'
                 }).
                 when('/login', {
                     templateUrl: 'templates/login.html',

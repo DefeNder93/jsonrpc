@@ -2,15 +2,9 @@
  * A controller to manage chat
  * @class
  */
-angular.module('reChat.chatCtrl', [])
-    .controller('ChatCtrl', ['$scope', 'UserService', 'JsonRpsService', '$routeParams',
-        function ($scope, UserService, JsonRpsService, $routeParams) {
-
-            $scope.roomName = $routeParams.name;
-            if (angular.isDefined($scope.roomName)) {
-                console.log("Room name - " + $scope.roomName);
-                // TODO: получить список по комнате
-            }
+angular.module('reChat.roomCtrl', [])
+    .controller('RoomCtrl', ['$scope', 'UserService', 'JsonRpsService',
+        function ($scope, UserService, JsonRpsService) {
 
             $scope.isShowUserPanel = true;
 
@@ -96,12 +90,12 @@ angular.module('reChat.chatCtrl', [])
             $scope.createRoom = function () {
                 if ($scope.roomName.length > 0) {
                     /*JsonRpsService.sendJSONRPC(JSONRPC_URL, "createRoom", {name: $scope.roomName}, function (response) {
-                        $scope.rooms.push(
-                            {name: $scope.roomName}
-                        );
-                    }, function (response) {
-                        // TODO alert и сообщение сервера в нем
-                    });*/
+                     $scope.rooms.push(
+                     {name: $scope.roomName}
+                     );
+                     }, function (response) {
+                     // TODO alert и сообщение сервера в нем
+                     });*/
                     $scope.isCreateRoomCollapsed = true;
                 }
                 $scope.roomName = "";
@@ -109,10 +103,10 @@ angular.module('reChat.chatCtrl', [])
 
             $scope.deleteUser = function (index, userName) {
                 /*JsonRpsService.sendJSONRPC(JSONRPC_URL, "deleteUser", {name: userName}, function (response) {
-                    $scope.users.splice(index, 1);
-                }, function (response) {
-                    // TODO alert и сообщение сервера в нем
-                });*/
+                 $scope.users.splice(index, 1);
+                 }, function (response) {
+                 // TODO alert и сообщение сервера в нем
+                 });*/
                 $scope.users.splice(index, 1);
             };
 
@@ -247,3 +241,4 @@ angular.module('reChat.chatCtrl', [])
             };
 
         }]);
+
