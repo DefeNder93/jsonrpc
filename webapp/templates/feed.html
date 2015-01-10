@@ -1,11 +1,11 @@
 <div class="container" style="padding-top: 40px">
     <div ng-show="isLoggedIn()" class="container">
-        <textarea class="form-control" placeholder="Write announcing" ng-model="message" style="width: 100%"></textarea>
+        <input class="form-control" placeholder="Theme" ng-model="theme" style="width: 100%">
+        <textarea class="form-control" placeholder="Write announcing" ng-model="message" style="width: 100%; margin-top: 15px"></textarea>
         <p style="padding-top: 10px">
             <button class="btn btn-default btn-success pull-right" ng-click="sendMessage()">Send</button>
         </p>
     </div>
-
     <div infinite-scroll="nextScroll()" style="margin-top: 40px">
         <div class="comments-box" ng-repeat="comment in comments">
             <div class="comment">
@@ -21,11 +21,8 @@
                     <p>{{comment.text}}</p>
                 </div>
             </div>
-
         </div>
-
     </div>
-
 </div>
 
 

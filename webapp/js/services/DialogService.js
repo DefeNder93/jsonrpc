@@ -29,6 +29,10 @@ angular
                         }*//*
                     }
                 });*/
+            },
+
+            closeAlert: function (index) {
+                $rootScope.alerts.splice(index, 1);
             }
         }
     }]);

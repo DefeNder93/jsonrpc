@@ -21,15 +21,15 @@ angular.module('reChat.headerCtrl', [])
 
             $rootScope.alerts = [];
 
-            $rootScope.$watch(function() {
+            /*$rootScope.$watch(function() {
                 return $rootScope.alerts;
             }, function (alerts) {
                 $timeout(function() {
                     if (alerts.length > 0) {
                         $scope.alerts.splice(alerts.length-1,1);
                     }
-                },5000);
-            }, true);
+                },3000);
+            }, true);*/
 
             $scope.addAlert = function() {
                 $rootScope.alerts.push({msg: 'Another alert!'});

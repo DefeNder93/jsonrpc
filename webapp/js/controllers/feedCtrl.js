@@ -19,9 +19,13 @@ angular.module('reChat.feedCtrl', [])
                 i++;
                 $scope.comments.unshift({
                     author: "Петр" + i,
-                    text: $scope.message
+                    text: $scope.message,
+                    theme: $scope.theme,
+                    time: moment(new Date()).format('HH:mm'),
+                    date: moment(new Date()).format('DD.MM.YY')
                 });
                 $scope.message = "";
+                $scope.theme = "";
             };
 
             $scope.comments = [  // TODO get from server
