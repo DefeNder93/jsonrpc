@@ -3,30 +3,43 @@
  * @class
  */
 angular.module('reChat.feedCtrl', [])
-    .controller('FeedCtrl', ['$scope','DialogService','UserService',
-        function($scope, DialogService, UserService) {
+    .controller('FeedCtrl', ['$scope', 'DialogService', 'UserService','JsonRpsService','ipCookie','$rootScope',
+        function ($scope, DialogService, UserService, JsonRpsService, ipCookie, $rootScope) {
 
             //console.log("init feed ctrl " + DialogService.showSuccessAlert('Тестовый заголовок','Тело сообщения'));
             //DialogService.showModalDialog(1,2,3);
 
-            $scope.isLoggedIn = function() {
+            $scope.isLoggedIn = function () {
                 return UserService.isLoggedIn();
             };
 
+            /*JsonRpsService.sendJSONRPC(JSONRPC_URL, "load_news", {name: $scope.roomName}, function (response) {
+                $scope.comments = [];
+            }, function (response) {
+                // TODO alert и сообщение сервера в нем
+            });*/
+
             $scope.message = "";
 
-            $scope.sendMessage = function() {
-                i++;
-                $scope.comments.unshift({
-                    author: "Петр" + i,
-                    text: $scope.message,
-                    theme: $scope.theme,
-                    time: moment(new Date()).format('HH:mm'),
-                    date: moment(new Date()).format('DD.MM.YY')
+            /*$scope.sendMessage = function () {
+                JsonRpsService.sendJSONRPC(JSONRPC_URL, "post_news", {session: ipCookie("session_id"),
+                    username: ipCookie("username"), time: moment(new Date()).valueOf(), theme: $scope.theme, news: $scope.message}, function (response) {
+                    $scope.comments.unshift({
+                        author: UserService.getUsername(),
+                        text: $scope.message,
+                        theme: $scope.theme,
+                        time: moment(new Date()).format('HH:mm'),
+                        date: moment(new Date()).format('DD.MM.YY')
+                    });
+                }, function (response) {
+                    console.log("!!!! " + );
+                    $rootScope.alerts.push({msg: response.message});
+                    // TODO alert и сообщение сервера в нем
                 });
+
                 $scope.message = "";
                 $scope.theme = "";
-            };
+            };*/
 
             $scope.comments = [  // TODO get from server
                 {
@@ -118,8 +131,8 @@ angular.module('reChat.feedCtrl', [])
             ];
 
             var i = 21;
-            $scope.nextScroll = function() {
-                for (j=0;j<=30;j++) {
+            $scope.nextScroll = function () {
+                for (j = 0; j <= 30; j++) {
                     $scope.comments.push({
                         author: "Иван" + i,
                         text: "Текст письма" + i
