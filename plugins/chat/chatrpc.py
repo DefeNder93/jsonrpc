@@ -20,7 +20,10 @@ error_codes = {
     100011: "Fetching of sessions data failed",
     100012: "incorrect ajax call",
     100013: "new and old passwords are the same",
-    100014: "incorrect input"
+    100014: "incorrect input",
+    100015: "contact list is empty",
+    100016: "user already exists in your contact list",
+    100017: "user not exists"
 }
 
 templates = {'errors': {}}
@@ -73,9 +76,9 @@ class ChatRPC(object):
         return decor
     # </RPCMethod()
 
-    ################### USER ##################################
-    @RPCMethod(auth=True)
-    def send_msg(session, sender, recipient_list, submit_time, msg_type, group, msg):
+    ################### CHAT ##################################
+    @RPCMethod(async=True)
+    def send_msg(session_id, sender, recipient_list, submit_time, msg_type, group, msg):
         # IN {"jsonrpc": "2.0", "method": "send_msg", "params": {"session_id" : "ssesid", "sender": "sender_id", "recipient_list":
         #    {"recipient_id": "recipient_id", "delivered":0}, "submit_time": "time", "type": "msg/add", "group": "__user__/group name", "msg": "text"}}
         # OUT {"jsonrpc": "2.0", "method": "send_msg", "params": {"status" : "Ok/Error", "message" : "success message/error code"}}
@@ -83,10 +86,10 @@ class ChatRPC(object):
         _user_arr  = []
         # get recipient from db
         for rec in recipient_list:
-            user = yield db.users.find_one({ 'username': rec })
+            user = yield db.users.find_one({ 'username': rec["recipient_id"] })
             if not user:
                 raise gen.Return({'status': 'error', 'code': 100008, 'message': error_codes[100008]})  # invalid username
-            _user_arr.append({rec: user, "delivered": 0})
+            _user_arr.append({"rec": user["username"], "delivered": 0})
 
         msg_query = {"sender": sender,"recipient_list": _user_arr, "submit_time": submit_time, "type": msg_type, "group": group, "msg": msg}
         yield db.messages.save(msg_query)  # this method sets _id in user object
@@ -95,7 +98,7 @@ class ChatRPC(object):
 
     ##############################################################
     @RPCMethod(auth=True)
-    def get_msg(session, username):
+    def get_msg(session_id, username):
         # IN {"jsonrpc": "2.0", "method": "get_msg", "params": {"session_id" : "ssesid"}}
         # OUT {"jsonrpc": "2.0", "method": "get_msg", "params": {"status" : "Ok/Error", "alive": true/false, "message" : "success message/error code"}}
 
@@ -104,22 +107,60 @@ class ChatRPC(object):
                                                           {
                                                             "rec": "user1",
                                                             "delivered": 0
-                                                          }}})
+                                                          }}}, {'_id': False})
         if msg_list == []:
             raise gen.Return({'status': 'ok', 'message': "no messages"})  # user already exists
 
         for msg in msg_list:
             msg_id = msg["_id"]
-            if msg["type"] == "msg":
-                cnt = 0
-                ret_list.append(msg)
-                for item in msg["recipient_list"]:
-                    if item["rec"] == username:
-                        msg["recipient_list"][cnt]["delivered"] = 1
-                    cnt  += 1
+            if msg["msg_type"] == "msg":
+                pass
+            if msg["msg_type"] == "add":
+                pass
+            if msg["msg_type"] == "del":
+                pass
+
+    ##############################################################
+    def get_userlist(session_id, username):
+        # IN {"jsonrpc": "2.0", "method": "get_userlist", "params": {"session_id" : "ssesid"}}
+        # OUT {"jsonrpc": "2.0", "method": "get_userlist", "params": {"status" : "Ok/Error", "alive": true/false, "message" : "success message/error code"}}
+
+        #get user list from db
+        userlist = yield db.userlist.find_one({'username': username})
+        if not userlist:
+            raise gen.Return({'status': 'error', 'code': 100015, 'message': error_codes[100015]})  # contact list is empty
+        raise gen.Return({'status': 'ok', 'userlist': userlist})
+
+    # </get_userlist()>
+
+    ##############################################################
+    def add_to_userlist(session_id, username, add_username):
+        # IN {"jsonrpc": "2.0", "method": "add_to_userlist", "params": {"session_id" : "ssesid"}}
+        # OUT {"jsonrpc": "2.0", "method": "add_to_userlist", "params": {"status" : "Ok/Error", "alive": true/false, "message" : "success message/error code"}}
+
+        # check if user exists
+        user = yield db.users.find_one({ 'username': add_username })
+        if not user:
+            raise gen.Return({'status': 'error', 'code': 100017, 'message': error_codes[100017]})  # username not exists
+
+        userlist = yield db.userlist.find_one({'username': username})
+        if not userlist:
+            db.userlist.save({"owner": username, "userlist":[]})
+        if userlist:
+            raise gen.Return({'status': 'error', 'code': 100016, 'message': error_codes[100016]})  # user already exists in your contact list
 
 
-    ################### USERGROUP ################################
+        raise gen.Return({'status': 'ok'})
+    # </add_to_userlist()>
+
+    ##############################################################
+    def del_from_userlist(session_id, username, del_username):
+        # IN {"jsonrpc": "2.0", "method": "del_from_userlist", "params": {"session_id" : "ssesid"}}
+        # OUT {"jsonrpc": "2.0", "method": "del_from_userlist", "params": {"status" : "Ok/Error", "alive": true/false, "message" : "success message/error code"}}
+        raise gen.Return({'status': 'ok'})
+    # </del_from_userlist()>
+
+    ##############################################################
 
 # </class RPCHandlers>
 

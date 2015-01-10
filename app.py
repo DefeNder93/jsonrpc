@@ -138,29 +138,19 @@ class AjaxHandler(BaseHandler):
                 method = retn
                 break
 
+        if not 'params' in data:
+            data['params'] = {}
+        if method.auth:
+            data['params']['session_id'] = self.current_user
         try:
-            method = getattr(userrpc.UserRPC, data['method']) \
-                     or  getattr(feedrpc.FeedRPC, data['method']) \
-                     or  getattr(chatrpc.ChatRPC, data['method'])
-            print method
-        except KeyError:
-            res = {'status': 'error', 'code': 100012, 'message': error_codes[100012]}  # incorrect ajax call
-        except AttributeError:
-            res = {'status': 'error', 'code': 100003, 'message': error_codes[100003]}  # unknown method
-        else:
-            if not 'params' in data:
-                data['params'] = {}
-            if method.auth:
-                data['params']['session_id'] = self.current_user
-            try:
-                res = yield method(**data['params'])
-            except Exception:
-                res = {'status': 'error', 'code': 100001, 'message': error_codes[100001]}   # internal server error
-                self.finish(res)
-                raise
+            res = yield method(**data['params'])
+        except Exception:
+            res = {'status': 'error', 'code': 100001, 'message': error_codes[100001]}   # internal server error
+            self.finish(res)
+            raise
 
-            if method == userrpc.UserRPC.login and res['status'] == 'ok':
-                self.set_secure_cookie('session_id', res['session_id'])
+        if method == userrpc.UserRPC.login and res['status'] == 'ok':
+            self.set_secure_cookie('session_id', res['session_id'])
 
         self.write(res)
         self.add_header('Access-Control-Allow-Origin', '*')

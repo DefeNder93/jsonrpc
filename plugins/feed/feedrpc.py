@@ -75,7 +75,7 @@ class FeedRPC(object):
 
     ################### NEWS ##################################
     @RPCMethod(async=True)
-    def post_news(session, username, time, theme, news):
+    def post_news(session_id, username, time, theme, news):
         # IN {"jsonrpc": "2.0", "method": "post_news", "params": {"session_id" : "ssesid", "username": "username", "time": "time", "theme": "theme", "news": "text"}}
         # OUT {"jsonrpc": "2.0", "method": "post_news", "params": {"status" : "Ok/Error", "message" : "success message/error code"}}
         news_query = {"username": username, "time": time, "theme": theme,  "news": news}
