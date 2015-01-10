@@ -27,7 +27,7 @@ function crossDomainAjax(url, postdata, successCallback) {
 
 var jsonrpc_req_id = 0;
 var JSONRPC_TIMEOUT = 10000; //10 seconds
-var JSONRPC_URL = '/ajax';
+var JSONRPC_URL = '/rpc';
 
 function sendJSONRPC(url, method, params, onResponse, onError) {
     var request = {};
