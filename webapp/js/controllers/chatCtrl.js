@@ -71,15 +71,14 @@ angular.module('reChat.chatCtrl', [])
 
             $scope.addUser = function () {
                 if ($scope.addedUserName.length > 0) {
-                    JsonRpsService.sendJSONRPC(JSONRPC_URL, "add_to_userlist", {session: ipCookie('session_uid'), username: $scope.addedUserName, add_username: ipCookie('username').toString()}, function (response) {
+                    JsonRpsService.sendJSONRPC(JSONRPC_URL, "add_to_userlist", {session: ipCookie('session_uid'), username: ipCookie('username').toString(), add_username: $scope.addedUserName}, function (response) {
 
                      }, function (response) {
-                         // TODO alert и сообщение сервера в нем
+                         $scope.users.push({
+                             name: $scope.addedUserName
+                         });
                      });
 
-                    $scope.users.push({ // TODO выпилить
-                        name: $scope.addedUserName
-                    });
                     $scope.addedUserName = "";
                     $scope.isInviteCollapsed = true;
                 }
@@ -221,6 +220,10 @@ angular.module('reChat.chatCtrl', [])
             ];
 
             JsonRpsService.sendJSONRPC(JSONRPC_URL, "get_userlist", {session: ipCookie('session_uid') ,username: ipCookie('username').toString()}, function (response) {
+                         if (angular.isDefined(response.result)) {
+                            $scope.users = response.result.userlist;
+                         }
+
                          console.log(response);
                      }, function (response) {
                          // TODO alert и сообщение сервера в нем
@@ -228,13 +231,13 @@ angular.module('reChat.chatCtrl', [])
                   );
 
 
-            $scope.users = [
+            /*$scope.users = [
                 {name: "Иван"},
                 {name: "Петр"},
                 {name: "Ирина"},
                 {name: "Андрей"},
                 {name: "Санек"}
-            ];
+            ];*/
 
             $scope.toggleSettingsCollapse = function () {
                 $scope.isSettingsCollapsed = !$scope.isSettingsCollapsed;
