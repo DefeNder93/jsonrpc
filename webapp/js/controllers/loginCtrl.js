@@ -8,14 +8,14 @@ angular.module('reChat.loginCtrl', [])
             $scope.userName = "";
             $scope.userPassword = "";
             var USERNAME_COOKIE = "username";
-            var SESSION_ID_COOKIE = "session_id";
+            var SESSION_ID_COOKIE = "session_uid";
             $scope.login = function() {
                 console.log("L/P: " + $scope.userName + " " + $scope.userPassword);
                 JsonRpsService.sendJSONRPC(JSONRPC_URL, "login", {username: $scope.userName, password: $scope.userPassword }, function(response) {
-                    //console.log("Success - " + response.message);
+                    console.log("Success login - " + response.message);
                     ipCookie(USERNAME_COOKIE, $scope.userName.toString(), {path: '/'});
                     ipCookie(SESSION_ID_COOKIE, response.result.session_id, {path: '/'});
-                    console.log("sid - " + response.result.session_id);
+                    console.log("set sid sid - " + response.result.session_id);
                     $location.path("/feed");
                     $route.reload();
                 }, function(response) {

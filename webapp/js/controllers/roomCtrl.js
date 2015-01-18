@@ -63,15 +63,11 @@ angular.module('reChat.roomCtrl', [])
 
             $scope.addUser = function () {
                 if ($scope.addedUserName.length > 0) {
-                    /*JsonRpsService.sendJSONRPC(JSONRPC_URL, "addUser", {name: $scope.addedUserName}, function (response) {
-                     if ($scope.message.length > 0) {
-                     $scope.users.unshift({
-                     name: $scope.message
-                     });
-                     }
-                     }, function (response) {
-                     // TODO alert и сообщение сервера в нем
-                     });*/
+                     JsonRpsService.sendJSONRPC(JSONRPC_URL, "addUser", {name: $scope.addedUserName}, function (response) {
+
+                        }, function (response) {
+                            // TODO alert и сообщение сервера в нем
+                        });
 
                     $scope.users.push({ // TODO выпилить
                         name: $scope.addedUserName

@@ -50,8 +50,8 @@ angular.module('reChat.feedCtrl', [])
             $scope.message = "";
 
             $scope.sendMessage = function () {
-                console.log("sid " + ipCookie("session_id"));
-                JsonRpsService.sendJSONRPC(JSONRPC_URL, "post_news", {session_id: ipCookie("session_id"), username: ipCookie("username"), time: moment(new Date()).valueOf(),
+                console.log("sid " + ipCookie("session_uid"));
+                JsonRpsService.sendJSONRPC(JSONRPC_URL, "post_news", {session: ipCookie("session_uid"), username: ipCookie("username"), time: moment(new Date()).valueOf(),
                     theme: $scope.theme, news: $scope.message}, function(response) {
                     console.log("success");
                     $scope.comments.unshift({

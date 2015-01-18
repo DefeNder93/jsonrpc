@@ -3,8 +3,10 @@
  * @class
  */
 angular.module('reChat.chatCtrl', [])
-    .controller('ChatCtrl', ['$scope', 'UserService', 'JsonRpsService', '$routeParams',
-        function ($scope, UserService, JsonRpsService, $routeParams) {
+    .controller('ChatCtrl', ['$scope', 'UserService', 'JsonRpsService', '$routeParams','ipCookie',
+        function ($scope, UserService, JsonRpsService, $routeParams, ipCookie) {
+
+            var JSONRPC_URL = '/rpc';
 
             $scope.roomName = $routeParams.name;
             if (angular.isDefined($scope.roomName)) {
@@ -69,15 +71,11 @@ angular.module('reChat.chatCtrl', [])
 
             $scope.addUser = function () {
                 if ($scope.addedUserName.length > 0) {
-                    /*JsonRpsService.sendJSONRPC(JSONRPC_URL, "addUser", {name: $scope.addedUserName}, function (response) {
-                     if ($scope.message.length > 0) {
-                     $scope.users.unshift({
-                     name: $scope.message
-                     });
-                     }
+                    JsonRpsService.sendJSONRPC(JSONRPC_URL, "add_to_userlist", {session: ipCookie('session_uid'), username: $scope.addedUserName, add_username: ipCookie('username').toString()}, function (response) {
+
                      }, function (response) {
-                     // TODO alert и сообщение сервера в нем
-                     });*/
+                         // TODO alert и сообщение сервера в нем
+                     });
 
                     $scope.users.push({ // TODO выпилить
                         name: $scope.addedUserName
@@ -221,6 +219,14 @@ angular.module('reChat.chatCtrl', [])
                     text: "Текст комментария20"
                 }
             ];
+
+            JsonRpsService.sendJSONRPC(JSONRPC_URL, "get_userlist", {session: ipCookie('session_uid') ,username: ipCookie('username').toString()}, function (response) {
+                         console.log(response);
+                     }, function (response) {
+                         // TODO alert и сообщение сервера в нем
+                     }
+                  );
+
 
             $scope.users = [
                 {name: "Иван"},
